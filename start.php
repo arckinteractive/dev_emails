@@ -2,10 +2,16 @@
 
 namespace dev_emails;
 
-elgg_register_event_handler('init', 'system', __NAMESPACE__ . '\\init');
+// trigger last so we can cache the last registered email handler
+elgg_register_event_handler('init', 'system', __NAMESPACE__ . '\\init', 999);
 
 function init() {
+	global $NOTIFICATION_HANDLERS;
+	
 	elgg_register_plugin_hook_handler('email', 'system', __NAMESPACE__ . '\\send_email', 0);
+	
+	elgg_set_config('dev_emails_notification_handler', $NOTIFICATION_HANDLERS['email']->handler);
+	register_notification_handler("email", __NAMESPACE__ . '\\email_notification_handler');
 }
 
 
@@ -51,4 +57,23 @@ function get_domain_whitelist() {
 	$domains = array_map('trim', $domain_arr);
 	
 	return $domains;
+}
+
+
+function email_notification_handler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL) {
+	$emails = get_email_whitelist();
+	$domains = get_domain_whitelist();
+	
+	$handler = elgg_get_config('dev_emails_notification_handler');
+	
+	if (in_array($to->email, $emails)) {
+		return $handler($from, $to, $subject, $message, $params); // we'll allow it
+	}
+	
+	$to_domain = explode('@', $to->email);
+	if (in_array($to_domain[1], $domains)) {
+		return $handler($from, $to, $subject, $message, $params); // we'll allow it
+	}
+	
+	return true;
 }
