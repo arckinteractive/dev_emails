@@ -1,6 +1,8 @@
 <?php
 
 namespace dev_emails;
+use ElggEntity;
+use ElggUser;
 
 // trigger last so we can cache the last registered email handler
 elgg_register_event_handler('init', 'system', __NAMESPACE__ . '\\init', 999);
