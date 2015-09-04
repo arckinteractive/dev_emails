@@ -20,4 +20,18 @@ $body .= elgg_view('output/longtext', array(
 	'value' => "Enter one domain per line.  These domains will be able to receive email from the system."
 ));
 
+$body .= '<label>';
+$options = array(
+	'name' => 'params[debug]',
+	'value' => 1
+);
+if ($vars['entity']->debug) {
+	$options['checked'] = "checked";
+}
+$body .= elgg_view('input/checkbox', $options);
+$body .= 'Debug</label>';
+$body .= elgg_view('output/longtext', array(
+	'value' => "If checked, email sending status will be printed in the error log"
+));
+
 echo elgg_view_module('main', $title, $body);
