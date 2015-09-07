@@ -19,7 +19,7 @@ function send_email($h, $t, $r, $p) {
 
 	if (in_array($p['to'], $emails)) {
 		if ($debug) {
-			error_log('Allowing Email: ' . $p['to']);
+			error_log('[dev_emails] Allowing Email: ' . $p['to']);
 		}
 		return $r; // we'll allow it
 	}
@@ -27,13 +27,13 @@ function send_email($h, $t, $r, $p) {
 	$to_domain = explode('@', $p['to']);
 	if (in_array($to_domain[1], $domains)) {
 		if ($debug) {
-			error_log('Allowing Email: ' . $p['to']);
+			error_log('[dev_emails] Allowing Email: ' . $p['to']);
 		}
 		return $r; // we'll allow it
 	}
 
 	if ($debug) {
-		error_log('Preventing Email: ' . $p['to']);
+		error_log('[dev_emails] Preventing Email: ' . $p['to']);
 	}
 	return false;
 }
@@ -82,7 +82,7 @@ function email_notifications_send($hook, $type, $return, $params) {
 
 	if (in_array($recipient->email, $emails)) {
 		if ($debug) {
-			error_log('Allowing Email method: ' . $recipient->email);
+			error_log('[dev_emails] Allowing Email method: ' . $recipient->email);
 		}
 		return $return; // we'll allow it
 	}
@@ -90,13 +90,13 @@ function email_notifications_send($hook, $type, $return, $params) {
 	$to_domain = explode('@', $recipient->email);
 	if (in_array($to_domain[1], $domains)) {
 		if ($debug) {
-			error_log('Allowing Email method: ' . $recipient->email);
+			error_log('[dev_emails] Allowing Email method: ' . $recipient->email);
 		}
 		return $return; // we'll allow it
 	}
 
 	if ($debug) {
-		error_log('Preventing Email method: ' . $recipient->email);
+		error_log('[dev_emails] Preventing Email method: ' . $recipient->email);
 	}
 	return true; // indicate we've already sent something
 }
