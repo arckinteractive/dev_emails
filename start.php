@@ -32,6 +32,12 @@ function send_email($h, $t, $r, $p) {
 		return $r; // we'll allow it
 	}
 
+	$blocked_log = get_blocked_log();
+	if ($blocked_log) {
+		$msg = "[" . date("F j, Y, g:i a e O"). "] ";
+		$msg .= var_export($p, true) . "\n";
+		file_put_contents($blocked_log, $msg, FILE_APPEND);
+	}
 	if ($debug) {
 		error_log('[dev_emails] Preventing Email: ' . $p['to']);
 	}
@@ -66,9 +72,10 @@ function get_domain_whitelist() {
 
 function email_notifications_send($hook, $type, $return, $params) {
 	$debug = get_debug_status();
-	$message = $params['notification'];
+	$notification = $params['notification'];
+	/* @var \Elgg\Notifications\Notification $notification */
 
-	$recipient = $message->getRecipient();
+	$recipient = $notification->getRecipient();
 
 	if (!$recipient || !$recipient->email) {
 		if ($debug) {
@@ -95,6 +102,18 @@ function email_notifications_send($hook, $type, $return, $params) {
 		return $return; // we'll allow it
 	}
 
+	$blocked_log = get_blocked_log();
+	if ($blocked_log) {
+		$msg = "[" . date("F j, Y, g:i a e O"). "] ";
+		$msg .= var_export(array(
+				'to' => $recipient->email,
+				'from' => $notification->getSender()->email,
+				'subject' => $notification->subject,
+				'body' => $notification->body,
+			), true) . "\n";
+		file_put_contents($blocked_log, $msg, FILE_APPEND);
+	}
+
 	if ($debug) {
 		error_log('[dev_emails] Preventing Email method: ' . $recipient->email);
 	}
@@ -112,4 +131,14 @@ function get_debug_status() {
 	$status = (int) elgg_get_plugin_setting('debug', PLUGIN_ID);
 	
 	return $status;
+}
+
+function get_blocked_log() {
+	static $value;
+
+	if ($value === null) {
+		$value = elgg_get_plugin_setting('blocked_log', PLUGIN_ID);
+	}
+
+	return $value;
 }
