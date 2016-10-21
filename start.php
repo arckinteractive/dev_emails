@@ -2,6 +2,8 @@
 
 namespace Arck\DevEmails;
 
+require_once __DIR__ . '/lib/autoloader.php';
+
 const PLUGIN_ID = 'dev_emails';
 
 // trigger last so we can cache the last registered email handler
