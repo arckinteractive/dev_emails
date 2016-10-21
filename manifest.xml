@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
 	<name>Dev Emails</name>
-        <id>dev_emails</id>
+	<id>dev_emails</id>
+	<version>2.0</version>
+
 	<author>Matt Beckett</author>
-	<version>1.1</version>
+	<author>Ismayil Khayredinov</author>
+	
 	<description>Prevent outgoing emails except for a select whitelist</description>
 	<website>http://arckinteractive.com</website>
-	<copyright>See COPYRIGHT.txt</copyright>
+	<copyright>(c) 2016, ArckInteractive LLC</copyright>
 	<license>GNU General Public License version 2</license>
 	
 	<requires>
 		<type>elgg_release</type>
-		<version>1.9</version>
+		<version>2.2</version>
 	</requires>
 </plugin_manifest>
