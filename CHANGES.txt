@@ -3,3 +3,7 @@
 1.1 (09/03/2015):
     - upgrade for 1.9
     - add optional error logging
+
+2.0
+	- updates the email handling to Elgg 2.2 API
+	- now uses Zend's FileTransport and writes suppressed emails to disk
